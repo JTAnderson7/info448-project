@@ -5,3 +5,6 @@ API Doc: https://rapidapi.com/campbellkitchen/api/campbells-kitchen?endpoint=53a
 Api Home: https://developer.campbellskitchen.com/admin/applications/1409618772214
 
 Api Key: bc5f2f0ca1d5e27fc916299a26327421
+
+
+Ex call: https://services.campbells.com/api/Recipes//recipe?q=chicken
