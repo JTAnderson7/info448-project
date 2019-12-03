@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">info448-project</string>
+    <string name="title_activity_recipe_detail">RecipeDetailActivity</string>
 </resources>

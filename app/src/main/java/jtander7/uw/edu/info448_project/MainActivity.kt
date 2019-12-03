@@ -20,27 +20,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Create Singleton
-//        val recentNewsUrl = accessRecentNews()
-//        startResponse(recentNewsUrl)
-        startResponse("https://services.campbells.com/api/Recipes//recipe")
-
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    fun startResponse(url: String) {
-        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
-            Response.Listener { response ->
-                var recipesObjects: List<RecipeObject> = parseRecipeAPI(response)
-//                setupRecyclerView(item_list, newsObjects, imageLoader)
-                // DO SOMETHING WITH NEWS OBJECTS
-                var something = "ahh"
-            },
-            Response.ErrorListener { error ->
-                Toast.makeText(applicationContext, "There was an error: $error" , Toast.LENGTH_SHORT).show()
-            }
-        )
-        VolleyService.getInstance(this).addToRequestQueue(jsonObjectRequest)
     }
 
     fun listRecipes(v: View){

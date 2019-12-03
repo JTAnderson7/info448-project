@@ -1,13 +1,23 @@
 package jtander7.uw.edu.info448_project
 
+import android.annotation.TargetApi
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_list_view.*
 import kotlinx.android.synthetic.main.item_list.*
 import kotlinx.android.synthetic.main.item_list_content.view.*
@@ -18,18 +28,59 @@ class ListView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_view)
 
-        setupRecyclerView(recycler_view)
+        // Create Singleton
+//        val recentNewsUrl = accessRecentNews()
+//        startResponse(recentNewsUrl)
+        startResponse("https://services.campbells.com/api/Recipes//recipe")
     }
 
-    private fun setupRecyclerView(recyclerView: RecyclerView){
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    fun startResponse(url: String) {
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.GET, url, null,
+            Response.Listener { response ->
+                var recipesObjects: List<RecipeObject> = parseRecipeAPI(response)
+                setupRecyclerView(recycler_view, recipesObjects)
+
+            },
+            Response.ErrorListener { error ->
+                Toast.makeText(applicationContext, "There was an error: $error" , Toast.LENGTH_SHORT).show()
+            }
+        )
+        VolleyService.getInstance(this).addToRequestQueue(jsonObjectRequest)
+    }
+
+
+    private fun setupRecyclerView(recyclerView: RecyclerView, list: List<RecipeObject>){
         val myList = listOf<String>("one", "two", "three", "four", "five")
 
-        recyclerView.adapter = MyRecyclerViewAdapter(myList)
+        recyclerView.adapter = MyRecyclerViewAdapter(list, this)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
 
     }
 
-    class MyRecyclerViewAdapter(private val values: List<String>): RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder>() {
+    class MyRecyclerViewAdapter(
+        private val values: List<RecipeObject>,
+        private val context: Context
+    ): RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder>() {
+
+        private val onClickListener: View.OnClickListener
+
+        init {
+            onClickListener = View.OnClickListener { v ->
+                val item = v.tag as RecipeObject
+
+//                Toast.makeText(context, item.name , Toast.LENGTH_SHORT).show()
+
+                val intent = Intent(v.context, RecipeDetailActivity::class.java)
+//                    .apply {
+//                    putExtra(ItemDetailFragment.ARG_ITEM_ID, item.headline)
+//                }
+                v.context.startActivity(intent)
+            }
+        }
+
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_list_content, parent, false)
@@ -42,13 +93,26 @@ class ListView : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: MyRecyclerViewAdapter.ViewHolder, position: Int) {
             val item = values[position]
-            holder.titleView.text = item
+            holder.titleView.text = item.name
+
+            if (item.imageUrl.isNullOrBlank()){
+            }else {
+                Picasso.with(context).load(item.imageUrl).fit().centerCrop().into(holder.imageView)
+            }
+
+            with(holder.itemView) {
+                tag = item
+                setOnClickListener(onClickListener)
+            }
+
+
         }
 
 
 
         inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
             val titleView: TextView = view.title_view
+            var imageView: ImageView = view.image_view
         }
 
 

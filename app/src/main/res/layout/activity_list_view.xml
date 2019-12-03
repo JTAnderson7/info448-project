@@ -7,8 +7,6 @@
     android:fitsSystemWindows="true"
     tools:context=".ListView">
 
-
-
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
@@ -17,8 +15,6 @@
         <include layout="@layout/item_list" />
 
     </FrameLayout>
-
-
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
