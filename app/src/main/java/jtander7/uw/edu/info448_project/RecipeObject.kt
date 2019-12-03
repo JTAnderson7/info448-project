@@ -22,7 +22,7 @@ data class RecipeObject(
     val directions:MutableList<String>
 ) : Parcelable
 
-fun parseNewsAPI(response: JSONObject):List<RecipeObject> {
+fun parseRecipeAPI(response: JSONObject):List<RecipeObject> {
 
     val recipes = mutableListOf<RecipeObject>()
 
@@ -70,7 +70,7 @@ fun parseNewsAPI(response: JSONObject):List<RecipeObject> {
             // Create recipe object
             val finalRecipe = RecipeObject(
                 name = recipeItemObj.getString("Name"),
-                description = recipeItemObj.getString("Description"),
+                description = Jsoup.parse(recipeItemObj.getString("Description")).text(),
                 servings = recipeItemObj.getString("Servings"),
                 imageUrl = imageUrl,
                 ingredients = ingredients,
