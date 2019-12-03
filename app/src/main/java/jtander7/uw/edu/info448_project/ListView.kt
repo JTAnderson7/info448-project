@@ -19,6 +19,8 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_list_view.*
+import kotlinx.android.synthetic.main.activity_list_view.toolbar
+import kotlinx.android.synthetic.main.activity_recipe_detail.*
 import kotlinx.android.synthetic.main.item_list.*
 import kotlinx.android.synthetic.main.item_list_content.view.*
 
@@ -27,6 +29,9 @@ class ListView : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_view)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setTitle("Recipes")
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Create Singleton
 //        val recentNewsUrl = accessRecentNews()

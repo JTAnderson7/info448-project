@@ -11,12 +11,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".RecipeDetailActivity"
+        <activity android:name=".RecipeDetailActivity"
             android:label="@string/title_activity_recipe_detail"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".ListView"></activity>
-        <activity android:name=".ListView" />
+            android:parentActivityName=".ListView">
+        </activity>
+
+        <activity android:name=".ListView"
+            android:label="ListView"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".MainActivity">
+        </activity>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
