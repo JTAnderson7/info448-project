@@ -136,7 +136,7 @@ class ListView : AppCompatActivity() {
 
         inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
             val titleView: TextView = view.title_view
-            var imageView: ImageView = view.image_view
+            val imageView: ImageView = view.image_view
         }
 
 

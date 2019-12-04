@@ -52,10 +52,22 @@ class ItemDetailFragment : Fragment() {
 
         // Show the dummy content as text in a TextView.
         item?.let {
+            Picasso.with(context).load(item?.imageUrl).fit().centerCrop().into(rootView.image_detail_view)
             rootView.text_detail_name.text= it.name
             rootView.text_detail_description.text = it.description
+            rootView.text_detail_servings.text = "Servings: " + it.servings
 
-            Picasso.with(context).load(item?.imageUrl).fit().centerCrop().into(rootView.image_detail_view)
+            var ingredients = "Ingredients:\n"
+            for (i in it.ingredients){
+                ingredients += i + "\n"
+            }
+            rootView.text_detail_ingredients.text = ingredients
+
+            var directions = "Directions:\n"
+            for (d in it.directions){
+                directions += d + " "
+            }
+            rootView.text_detail_directions.text = directions
 
         }
 
