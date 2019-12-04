@@ -62,6 +62,12 @@ class ListView : AppCompatActivity() {
             Request.Method.GET, url, null,
             Response.Listener { response ->
                 var recipesObjects: List<Recipe.RecipeObject> = parseRecipeAPI(response)
+
+                // put in the map
+                for(recipe in recipesObjects){
+                    Recipe.recipeMap.put(recipe.name, recipe)
+                }
+
                 setupRecyclerView(recycler_view, recipesObjects)
 
             },
@@ -94,10 +100,9 @@ class ListView : AppCompatActivity() {
 
 //                Toast.makeText(context, item.name , Toast.LENGTH_SHORT).show()
 
-                val intent = Intent(v.context, RecipeDetailActivity::class.java)
-//                    .apply {
-//                    putExtra(ItemDetailFragment.ARG_ITEM_ID, item.headline)
-//                }
+                val intent = Intent(v.context, RecipeDetailActivity::class.java).apply {
+                    putExtra(ItemDetailFragment.ARG_ITEM_ID, item.name)
+                }
                 v.context.startActivity(intent)
             }
         }

@@ -9,6 +9,9 @@ import org.json.JSONObject
 import org.jsoup.Jsoup
 
 object Recipe{
+
+    var recipeMap: MutableMap<String, RecipeObject> = HashMap()
+
     /**
      * A class representing a single recipe item. Can be parsed for a recipe name, description,
      * serving size, image url, list of ingredients, and a list of steps to cook.
