@@ -1,12 +1,14 @@
 package jtander7.uw.edu.info448_project
 
 import android.annotation.TargetApi
+import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -18,9 +20,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_list_view.*
 import kotlinx.android.synthetic.main.activity_list_view.toolbar
-import kotlinx.android.synthetic.main.activity_recipe_detail.*
 import kotlinx.android.synthetic.main.item_list.*
 import kotlinx.android.synthetic.main.item_list_content.view.*
 
@@ -33,10 +33,25 @@ class ListView : AppCompatActivity() {
         supportActionBar?.setTitle("Recipes")
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // Create Singleton
-//        val recentNewsUrl = accessRecentNews()
-//        startResponse(recentNewsUrl)
+
         startResponse("https://services.campbells.com/api/Recipes//recipe")
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val menuCreator = menuInflater
+        menuCreator.inflate(R.menu.menu, menu)
+        val mySearchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        (menu.findItem(R.id.action_search).actionView as android.widget.SearchView).apply {
+            setSearchableInfo(mySearchManager.getSearchableInfo(componentName))
+            isIconifiedByDefault = false
+        }
+        return true
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        val query = intent.getStringExtra(SearchManager.QUERY)
+        val searchUrl = "https://services.campbells.com/api/Recipes//recipe?q=" + query
+        startResponse(searchUrl)
     }
 
 
@@ -109,8 +124,6 @@ class ListView : AppCompatActivity() {
                 tag = item
                 setOnClickListener(onClickListener)
             }
-
-
         }
 
 
