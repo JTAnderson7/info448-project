@@ -20,6 +20,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.squareup.picasso.Picasso
+import jtander7.uw.edu.info448_project.Recipe.parseRecipeAPI
 import kotlinx.android.synthetic.main.activity_list_view.toolbar
 import kotlinx.android.synthetic.main.item_list.*
 import kotlinx.android.synthetic.main.item_list_content.view.*
@@ -60,7 +61,7 @@ class ListView : AppCompatActivity() {
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET, url, null,
             Response.Listener { response ->
-                var recipesObjects: List<RecipeObject> = parseRecipeAPI(response)
+                var recipesObjects: List<Recipe.RecipeObject> = parseRecipeAPI(response)
                 setupRecyclerView(recycler_view, recipesObjects)
 
             },
@@ -72,7 +73,7 @@ class ListView : AppCompatActivity() {
     }
 
 
-    private fun setupRecyclerView(recyclerView: RecyclerView, list: List<RecipeObject>){
+    private fun setupRecyclerView(recyclerView: RecyclerView, list: List<Recipe.RecipeObject>){
         val myList = listOf<String>("one", "two", "three", "four", "five")
 
         recyclerView.adapter = MyRecyclerViewAdapter(list, this)
@@ -81,7 +82,7 @@ class ListView : AppCompatActivity() {
     }
 
     class MyRecyclerViewAdapter(
-        private val values: List<RecipeObject>,
+        private val values: List<Recipe.RecipeObject>,
         private val context: Context
     ): RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder>() {
 
@@ -89,7 +90,7 @@ class ListView : AppCompatActivity() {
 
         init {
             onClickListener = View.OnClickListener { v ->
-                val item = v.tag as RecipeObject
+                val item = v.tag as Recipe.RecipeObject
 
 //                Toast.makeText(context, item.name , Toast.LENGTH_SHORT).show()
 
