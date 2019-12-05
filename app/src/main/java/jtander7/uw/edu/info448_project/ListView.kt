@@ -4,6 +4,8 @@ import android.annotation.TargetApi
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -27,6 +29,11 @@ import kotlinx.android.synthetic.main.item_list_content.view.*
 
 class ListView : AppCompatActivity() {
 
+    private lateinit var mSensorManager : SensorManager
+    private lateinit var mAccelerometer : Sensor
+    private lateinit var mMotionSensor : MotionSensor
+    private var recipeCount : Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_view)
@@ -34,8 +41,32 @@ class ListView : AppCompatActivity() {
         supportActionBar?.setTitle("Recipes")
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        //MotionSensor initialization for shake detection
+        mSensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        mMotionSensor = MotionSensor()
+        mMotionSensor.setOnShakeListener(object : MotionSensor.OnShakeListener {
+            override fun onShake(count: Int) {
+                //count -> number of shakes
+                randomRecipe(count)
+            }
+        })
 
         startResponse("https://services.campbells.com/api/Recipes//recipe?q=")
+    }
+
+    public override fun onResume() {
+        super.onResume()
+        mSensorManager.registerListener(
+            mMotionSensor,
+            mAccelerometer,
+            SensorManager.SENSOR_DELAY_UI
+        )
+    }
+
+    public override fun onPause() {
+        mSensorManager.unregisterListener(mMotionSensor)
+        super.onPause()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -55,13 +86,26 @@ class ListView : AppCompatActivity() {
         startResponse(searchUrl)
     }
 
+    fun randomRecipe(count: Int) {
+        if (count == 1) {
+            val recipeNum = (0 until recipeCount).random()
+            startResponse("https://services.campbells.com/api/Recipes//recipe?q=", recipeNum)
+            Toast.makeText(this, "Random recipe selected!", Toast.LENGTH_LONG).show()
+        }
+    }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    fun startResponse(url: String) {
+    fun startResponse(url: String, number: Int = -1) {
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET, url, null,
             Response.Listener { response ->
                 var recipesObjects: List<Recipe.RecipeObject> = parseRecipeAPI(response)
+                //random recipe select
+                if(number >= 0) {
+                    recipesObjects = listOf(recipesObjects.get(number))
+                } else {
+                    recipeCount = recipesObjects.count()
+                }
 
                 // put in the map
                 for(recipe in recipesObjects){
@@ -80,7 +124,6 @@ class ListView : AppCompatActivity() {
 
 
     private fun setupRecyclerView(recyclerView: RecyclerView, list: List<Recipe.RecipeObject>){
-        val myList = listOf<String>("one", "two", "three", "four", "five")
 
         recyclerView.adapter = MyRecyclerViewAdapter(list, this)
         recyclerView.layoutManager = GridLayoutManager(this, 2)

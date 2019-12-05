@@ -23,35 +23,34 @@ import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import jtander7.uw.edu.info448_project.MotionSensor.OnShakeListener
 import android.hardware.Sensor.TYPE_ACCELEROMETER
 import android.hardware.Sensor
-
-
+import kotlinx.android.synthetic.main.item_list.*
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mSensorManager : SensorManager
+    /*private lateinit var mSensorManager : SensorManager
     private lateinit var mAccelerometer : Sensor
-    private lateinit var mMotionSensor : MotionSensor
+    private lateinit var mMotionSensor : MotionSensor*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // MotionSensor initialization for shake detection
-        mSensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        mAccelerometer = mSensorManager
-            .getDefaultSensor(TYPE_ACCELEROMETER)
+        val intent = Intent(this, ListView::class.java)
+        startActivity(intent)
+        //MotionSensor initialization for shake detection
+        /*mSensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        mAccelerometer = mSensorManager.getDefaultSensor(TYPE_ACCELEROMETER)
         mMotionSensor = MotionSensor()
         mMotionSensor.setOnShakeListener(object : OnShakeListener {
-
             override fun onShake(count: Int) {
                 //count -> number of shakes
                 randomRecipe(count)
             }
-        })
+        })*/
     }
 
-    public override fun onResume() {
+    /*public override fun onResume() {
         super.onResume()
         mSensorManager.registerListener(
             mMotionSensor,
@@ -67,11 +66,12 @@ class MainActivity : AppCompatActivity() {
 
     //select random recipe to show
     fun randomRecipe(count: Int) {
+        val intent = Intent(this, ListView::class.java)
+        startActivity(intent)
         if (count == 1) {
-            //toast to see if shake works
-            Toast.makeText(this, "Shake detected", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Random recipe selected!", Toast.LENGTH_LONG).show()
         }
-    }
+    }*/
 
     fun listRecipes(v: View){
         val intent = Intent(this, ListView::class.java)
@@ -88,6 +88,4 @@ class MainActivity : AppCompatActivity() {
 //
 //        return urlString
 //    }
-
-
 }
