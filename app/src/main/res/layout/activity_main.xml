@@ -7,21 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@drawable/food">
 
     <TextView
         android:id="@+id/shake_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Shake for the random recipe"
-        android:padding="16dp"/>
+        style="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/white"
+        android:textSize="@android:dimen/app_icon_size" />
+
 
     <Button
         android:id="@+id/view_recipe_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="View Recipes"
-        android:padding="16dp"
-        android:onClick="listRecipes"/>
+        android:layout_marginTop="400dp"
+        android:onClick="listRecipes"
+        android:text="View All Recipes" />
 
 </LinearLayout>
