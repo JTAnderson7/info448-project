@@ -57,15 +57,15 @@ class ItemDetailFragment : Fragment() {
             rootView.text_detail_description.text = it.description
             rootView.text_detail_servings.text = "Servings: " + it.servings
 
-            var ingredients = "Ingredients:\n \n"
+            var ingredients = ""
 
             for (i in it.ingredients){
-                ingredients += "- " + i + "\n \n"
+                ingredients += "- " + i + "\n"
             }
             rootView.text_detail_ingredients.text = ingredients
 
             var numb = 1
-            var directions = "Directions:\n \n"
+            var directions = ""
             for (d in it.directions){
                 directions += numb.toString() + ")  " + d + " \n \n"
                 numb++

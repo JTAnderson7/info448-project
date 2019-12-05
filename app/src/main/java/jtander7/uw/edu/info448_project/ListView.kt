@@ -35,7 +35,7 @@ class ListView : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
-        startResponse("https://services.campbells.com/api/Recipes//recipe")
+        startResponse("https://services.campbells.com/api/Recipes//recipe?q=")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
