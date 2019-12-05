@@ -36,8 +36,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val intent = Intent(this, ListView::class.java)
-        startActivity(intent)
+        //val intent = Intent(this, ListView::class.java)
+        //startActivity(intent)
         //MotionSensor initialization for shake detection
         /*mSensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         mAccelerometer = mSensorManager.getDefaultSensor(TYPE_ACCELEROMETER)
