@@ -14,9 +14,11 @@
         android:id="@+id/shake_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Shake for the random recipe"
+        android:text="Shake for a random recipe!"
         style="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/white"
+        android:textColor="@color/textColor"
+        android:textAlignment="center"
+        android:background="#8FFF"
         android:textSize="@android:dimen/app_icon_size" />
 
 
