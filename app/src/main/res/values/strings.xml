@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">info448-project</string>
+    <string name="app_name">FoodMood</string>
     <string name="title_activity_recipe_detail">RecipeDetailActivity</string>
     <string name="search">Search...</string>
     <string name="search_label">Search</string>
