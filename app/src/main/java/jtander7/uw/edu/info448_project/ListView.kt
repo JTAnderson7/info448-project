@@ -83,11 +83,11 @@ class ListView : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         val query = intent.getStringExtra(SearchManager.QUERY)
         val searchUrl = "https://services.campbells.com/api/Recipes//recipe?q=" + query
-        startResponse(searchUrl)
+        startResponse(searchUrl, -404)
     }
 
     fun randomRecipe(count: Int) {
-        if (count == 1) {
+        if (count > 0) {
             val recipeNum = (0 until recipeCount).random()
             startResponse("https://services.campbells.com/api/Recipes//recipe?q=", recipeNum)
             Toast.makeText(this, "Random recipe selected!", Toast.LENGTH_LONG).show()
@@ -103,7 +103,7 @@ class ListView : AppCompatActivity() {
                 //random recipe select
                 if(number >= 0) {
                     recipesObjects = listOf(recipesObjects.get(number))
-                } else {
+                } else if(number == -1){
                     recipeCount = recipesObjects.count()
                 }
 
