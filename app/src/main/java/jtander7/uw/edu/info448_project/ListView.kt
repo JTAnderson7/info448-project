@@ -32,7 +32,6 @@ class ListView : AppCompatActivity() {
     private lateinit var mSensorManager : SensorManager
     private lateinit var mAccelerometer : Sensor
     private lateinit var mMotionSensor : MotionSensor
-    private var recipeCount : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +39,12 @@ class ListView : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setTitle("Recipes")
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        //search input save
+        /*if(savedInstanceState != null){
+            val savedSearch: String? = savedInstanceState.getString(searchKey)
+            startResponse("https://services.campbells.com/api/Recipes//recipe?q=" + savedSearch)
+        }*/
 
         //MotionSensor initialization for shake detection
         mSensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -83,28 +88,36 @@ class ListView : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         val query = intent.getStringExtra(SearchManager.QUERY)
         val searchUrl = "https://services.campbells.com/api/Recipes//recipe?q=" + query
-        startResponse(searchUrl, -404)
+        startResponse(searchUrl)
     }
 
     fun randomRecipe(count: Int) {
         if (count > 0) {
-            val recipeNum = (0 until recipeCount).random()
-            startResponse("https://services.campbells.com/api/Recipes//recipe?q=", recipeNum)
+            startResponse("https://services.campbells.com/api/Recipes//recipe?q=", count)
             Toast.makeText(this, "Random recipe selected!", Toast.LENGTH_LONG).show()
         }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    fun startResponse(url: String, number: Int = -1) {
+    fun startResponse(url: String, shakes: Int = 0) {
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET, url, null,
             Response.Listener { response ->
                 var recipesObjects: List<Recipe.RecipeObject> = parseRecipeAPI(response)
                 //random recipe select
-                if(number >= 0) {
-                    recipesObjects = listOf(recipesObjects.get(number))
-                } else if(number == -1){
-                    recipeCount = recipesObjects.count()
+                if(recipesObjects.count() > 0) {
+                    if(shakes > 0) {
+                        var recipeHolder = mutableListOf<Recipe.RecipeObject>()
+                        //select a random recipe per shake (scrapped)
+                        /*for(i in 0 until shakes) {
+                            val recipeNum = (0 until recipesObjects.count()).random()
+                            recipeHolder.add(recipesObjects.get(recipeNum))
+                        }*/
+                        //select a random recipe
+                        val recipeNum = (0 until recipesObjects.count()).random()
+                        recipeHolder.add(recipesObjects.get(recipeNum))
+                        recipesObjects = recipeHolder
+                    }
                 }
 
                 // put in the map
@@ -141,7 +154,6 @@ class ListView : AppCompatActivity() {
             onClickListener = View.OnClickListener { v ->
                 val item = v.tag as Recipe.RecipeObject
 
-//                Toast.makeText(context, item.name , Toast.LENGTH_SHORT).show()
 
                 val intent = Intent(v.context, RecipeDetailActivity::class.java).apply {
                     putExtra(ItemDetailFragment.ARG_ITEM_ID, item.name)
@@ -185,7 +197,13 @@ class ListView : AppCompatActivity() {
 
     }
 
-
-
+    /*
+    private val searchKey = "searchQuery"
+    //saving search input value
+    override fun onSaveInstanceState(outState: Bundle) {
+        val query = intent.getStringExtra(SearchManager.QUERY)
+        outState.putString(searchKey, query)
+        super.onSaveInstanceState(outState)
+    }*/
 
 }

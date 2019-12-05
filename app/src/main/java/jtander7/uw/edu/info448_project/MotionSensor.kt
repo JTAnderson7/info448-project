@@ -39,12 +39,12 @@ class MotionSensor : SensorEventListener {
 
             if (gForce > SHAKE_THRESHOLD_GRAVITY) {
                 val now = System.currentTimeMillis()
-                //ignore shake events too fast (500 ms)
+                //ignore shake events too fast (ms)
                 if (mShakeTimestamp + SHAKE_SLOP_TIME_MS > now) {
                     return
                 }
 
-                //reset shake count tracker after 3 seconds of idle
+                //reset shake count tracker after some time of idle
                 if (mShakeTimestamp + SHAKE_COUNT_RESET_TIME_MS < now) {
                     mShakeCount = 0
                 }
