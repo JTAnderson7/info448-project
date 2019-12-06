@@ -1,10 +1,16 @@
-# info448-project
+# Food Mood
 
-API Doc: https://rapidapi.com/campbellkitchen/api/campbells-kitchen?endpoint=53aa57ebe4b0a9b1348dace6
-
-Api Home: https://developer.campbellskitchen.com/admin/applications/1409618772214
-
-Api Key: bc5f2f0ca1d5e27fc916299a26327421
+Android application centered around finding recipes to cook at home. 
 
 
-Ex call: https://services.campbells.com/api/Recipes//recipe?q=chicken
+### Usage
+>- Displays a list of random recipes once the user clicks the button "View all recipes"
+>- Provides the ability to search for a specific recipe by keyword
+>- Displays detailed information for the chosen recipe
+>- Gives a random recipe once the user shakes the phone
+
+
+
+
+### Contributors
+Henry Lin, JT Anderson, and Dilbara Seitalieva
